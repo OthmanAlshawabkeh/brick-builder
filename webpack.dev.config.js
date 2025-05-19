@@ -51,7 +51,11 @@ module.exports = Object.assign({}, webpackBaseConfig, {
       'Access-Control-Allow-Credentials': 'false'
     },
     client: {
-      webSocketURL: 'auto://'
+      webSocketURL: {
+        hostname: 'localhost',
+        port: 4000,
+        protocol: 'ws'
+      }
     }
   },
 });
