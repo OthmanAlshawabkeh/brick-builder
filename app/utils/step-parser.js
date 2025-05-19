@@ -1,6 +1,3 @@
-const colors = require('colors');
-const cliProgress = require('cli-progress');
-
 export function parseSTEPFile(fileContent) {
   // Split file content into lines
   const lines = fileContent.toString().split(";");
