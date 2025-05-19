@@ -7,7 +7,6 @@ import Brick from 'components/engine/Brick';
 
 import styles from '../styles/components/sidebar';
 
-
 class Sidebar extends React.Component {
   render() {
     const { utilsOpen, resetScene } = this.props;
@@ -57,14 +56,30 @@ class Sidebar extends React.Component {
     saveAs(fileToSave, fileName);
   }
 
-  // TODO: bad, do this in epic/saga/thunk but not here
   @autobind
   _importFile(objects) {
-    const { importScene } = this.props;
-    const bricks = objects.map((o) => new Brick(o.intersect, o.color, o.dimensions, o.rotation, o.translation));
-    importScene(bricks);
+    try {
+      const { importScene } = this.props;
+      
+      // Validate the imported data structure
+      if (!Array.isArray(objects)) {
+        throw new Error('Invalid scene format: Expected an array of objects');
+      }
+
+      const bricks = objects.map((o) => {
+        // Validate required properties
+        if (!o.intersect || !o.color || !o.dimensions || !o.rotation || !o.translation) {
+          throw new Error('Invalid brick data: Missing required properties');
+        }
+        return new Brick(o.intersect, o.color, o.dimensions, o.rotation, o.translation);
+      });
+
+      importScene(bricks);
+    } catch (error) {
+      console.error('Failed to import scene:', error);
+      // You might want to show this error to the user through your UI
+    }
   }
 }
-
 
 export default Sidebar;
