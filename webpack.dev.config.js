@@ -43,6 +43,8 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     contentBase: 'assets',
     publicPath: '/',
     quiet: false,
+    transportMode: 'ws',
+    disableHostCheck: true,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': 'false',
