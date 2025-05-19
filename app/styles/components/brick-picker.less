@@ -6,10 +6,8 @@
 
 @import '~styles/vars';
 
-
 @brick-height: 60px;
 @tip-size: 7px;
-
 
 :local(.brickPicker) {
   position: relative;
@@ -17,7 +15,6 @@
   align-items: center;
   justify-content: flex-start;
 }
-
 
 :local(.brick) {
   color: @white;
@@ -31,12 +28,9 @@
   }
 }
 
-
 :local(.brickIcon) {
   height: 40px;
-  // margin-right: @base-margin-small;
 }
-
 
 :local(.picker) {
   position: absolute;
@@ -47,9 +41,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   border: 1px solid @primary-blue;
+  min-width: 300px;
 
   &:after {
     content: ' ';
@@ -64,9 +60,9 @@
   }
 }
 
-
 :local(.brickExample) {
   margin-right: @base-margin;
+  margin-bottom: @base-margin;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,7 +72,6 @@
     margin-right: 0;
   }
 }
-
 
 :local(.brickThumb) {
   height: 50px;
@@ -94,13 +89,47 @@
   }
 }
 
-
 :local(.selected) {
   composes: brickThumb;
   background-color: @tertiary-blue;
 }
 
-
 :local(.label) {
   color: @white;
+}
+
+:local(.customBrick) {
+  width: 100%;
+  margin-top: @base-margin;
+  padding-top: @base-margin;
+  border-top: 1px solid fade(@white, 20%);
+  
+  button {
+    background: @tertiary-blue;
+    color: @white;
+    border: none;
+    padding: @base-padding-small @base-padding;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all @base-transition-time ease-in-out;
+
+    &:hover {
+      background: darken(@tertiary-blue, 10%);
+    }
+  }
+}
+
+:local(.customForm) {
+  margin-top: @base-margin;
+  display: flex;
+  gap: @base-margin-small;
+
+  input {
+    width: 70px;
+    padding: @base-padding-small;
+    border: 1px solid @tertiary-blue;
+    border-radius: 4px;
+    background: @white;
+    color: @primary-blue;
+  }
 }

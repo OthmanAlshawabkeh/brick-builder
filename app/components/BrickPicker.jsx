@@ -3,20 +3,23 @@ import If from 'if-only';
 import isEqual from 'lodash/isEqual';
 
 import { displayNameFromDimensions, getBrickIconFromDimensions } from 'utils';
-import { bricks } from 'utils/constants';
+import { bricks, addCustomBrick } from 'utils/constants';
 
 import styles from 'styles/components/brick-picker';
-
 
 class BrickPicker extends React.Component {
   state = {
     open: false,
+    showCustomForm: false,
+    customX: '',
+    customZ: ''
   }
 
   constructor(props) {
     super(props);
     this._togglePicker = this._togglePicker.bind(this);
     this._handleClickOutside = this._handleClickOutside.bind(this);
+    this._handleCustomSubmit = this._handleCustomSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -29,14 +32,13 @@ class BrickPicker extends React.Component {
 
   render() {
     const { selectedSize, handleSetBrick } = this.props;
-    const { open } = this.state;
+    const { open, showCustomForm, customX, customZ } = this.state;
     return (
       <div className={styles.brickPicker}>
         <div className={styles.brick} onClick={this._togglePicker}>
           <div className={styles.brickIcon}>
             {getBrickIconFromDimensions(selectedSize)}
           </div>
-          {/* {displayNameFromDimensions(selectedSize)} */}
         </div>
         <If cond={open}>
           <div className={styles.picker} ref={(picker) => this.picker = picker}>
@@ -50,6 +52,32 @@ class BrickPicker extends React.Component {
                 </div>
               </div>
             ))}
+            <div className={styles.customBrick}>
+              <button onClick={() => this.setState({ showCustomForm: !showCustomForm })}>
+                + Add Custom
+              </button>
+              <If cond={showCustomForm}>
+                <form onSubmit={this._handleCustomSubmit} className={styles.customForm}>
+                  <input 
+                    type="number" 
+                    placeholder="Width" 
+                    value={customX}
+                    onChange={(e) => this.setState({ customX: e.target.value })}
+                    min="1"
+                    required
+                  />
+                  <input 
+                    type="number" 
+                    placeholder="Depth" 
+                    value={customZ}
+                    onChange={(e) => this.setState({ customZ: e.target.value })}
+                    min="1"
+                    required
+                  />
+                  <button type="submit">Add</button>
+                </form>
+              </If>
+            </div>
           </div>
         </If>
       </div>
@@ -62,14 +90,27 @@ class BrickPicker extends React.Component {
     });
   }
 
-  _handleClickOutside() {
+  _handleClickOutside(event) {
     if (this.picker && !this.picker.contains(event.target)) {
       this.setState({
         open: false,
+        showCustomForm: false
       });
     }
   }
-}
 
+  _handleCustomSubmit(e) {
+    e.preventDefault();
+    const { customX, customZ } = this.state;
+    const newBrick = { x: parseInt(customX), z: parseInt(customZ) };
+    addCustomBrick(newBrick);
+    this.props.handleSetBrick(newBrick);
+    this.setState({
+      customX: '',
+      customZ: '',
+      showCustomForm: false
+    });
+  }
+}
 
 export default BrickPicker;
