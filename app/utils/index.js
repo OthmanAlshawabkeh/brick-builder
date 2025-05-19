@@ -3,6 +3,10 @@ import { base } from './constants';
 import * as Icons from 'components/Icons';
 
 export function CSSToHex(cssColor) {
+  // Ensure cssColor is a string and has a valid format
+  if (typeof cssColor !== 'string' || !cssColor.startsWith('#')) {
+    return parseInt('0xFFFFFF', 16); // Default to white if invalid
+  }
   return parseInt(`0x${cssColor.substring(1)}`, 16);
 }
 
