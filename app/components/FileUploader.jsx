@@ -3,6 +3,7 @@ import autobind from 'autobind-decorator';
 
 import styles from '../styles/components/file-uploader';
 
+
 class FileUploader extends React.Component {
   state = {}
 
@@ -10,13 +11,7 @@ class FileUploader extends React.Component {
     const { children } = this.props;
     return (
       <div className={styles.wrapper}>
-        <input 
-          key="input" 
-          className={styles.input} 
-          type="file" 
-          accept=".json"
-          onChange={(e) => this._handleFileChange(e)} 
-        />
+        <input key="input" className={styles.input} type="file" onChange={(e) => this._handleFileChange(e)} />
         {children}
       </div>
     );
@@ -38,5 +33,6 @@ class FileUploader extends React.Component {
     console.log('end of code');
   }
 }
+
 
 export default FileUploader;

@@ -20,6 +20,7 @@ import { colors, base } from 'utils/constants';
 
 import styles from 'styles/components/scene';
 
+
 class Scene extends React.Component {
   state = {
     drag: false,
@@ -97,9 +98,13 @@ class Scene extends React.Component {
     light.init();
     this.scene.add(light);
 
+    // var spotLightHelper = new THREE.SpotLightHelper( light );
+    // this.scene.add( spotLightHelper );
+
     const ambientLight = new AmbientLight(0x606060);
     this.scene.add(ambientLight);
 
+    // testing
     const pointLight = new THREE.PointLight( 0xfff0f0, 0.6, 100, 0 );
     pointLight.position.set( -1000, 1500, 500 );
     this.scene.add( pointLight );
@@ -312,6 +317,7 @@ class Scene extends React.Component {
     this.controls.update();
     PubSub.publish('monitor');
 
+    // just testing
     this._renderScene();
     this.frameId = window.requestAnimationFrame(this._animate);
   }
@@ -343,5 +349,6 @@ class Scene extends React.Component {
     );
   }
 }
+
 
 export default Scene;

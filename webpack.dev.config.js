@@ -47,8 +47,5 @@ module.exports = Object.assign({}, webpackBaseConfig, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': 'false'
     },
-    client: {
-      webSocketURL: 'auto'
-    }
   },
 });

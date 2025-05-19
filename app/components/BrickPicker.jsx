@@ -3,9 +3,10 @@ import If from 'if-only';
 import isEqual from 'lodash/isEqual';
 
 import { displayNameFromDimensions, getBrickIconFromDimensions } from 'utils';
-import { bricks, customBricks } from 'utils/constants';
+import { bricks } from 'utils/constants';
 
 import styles from 'styles/components/brick-picker';
+
 
 class BrickPicker extends React.Component {
   state = {
@@ -29,27 +30,23 @@ class BrickPicker extends React.Component {
   render() {
     const { selectedSize, handleSetBrick } = this.props;
     const { open } = this.state;
-    const allBricks = [...bricks, ...customBricks];
-    
     return (
       <div className={styles.brickPicker}>
         <div className={styles.brick} onClick={this._togglePicker}>
           <div className={styles.brickIcon}>
             {getBrickIconFromDimensions(selectedSize)}
           </div>
+          {/* {displayNameFromDimensions(selectedSize)} */}
         </div>
         <If cond={open}>
           <div className={styles.picker} ref={(picker) => this.picker = picker}>
-            {allBricks.map((b, i) => (
+            {bricks.map((b, i) => (
               <div key={i} className={styles.brickExample}>
-                <div 
-                  className={isEqual(selectedSize, b) ? styles.selected : styles.brickThumb} 
-                  onClick={() => handleSetBrick(b)}
-                >
+                <div className={isEqual(selectedSize, b) ? styles.selected : styles.brickThumb} onClick={() => handleSetBrick(b)}>
                   {getBrickIconFromDimensions(b)}
                 </div>
                 <div className={styles.label}>
-                  {b.name || displayNameFromDimensions(b)}
+                  {displayNameFromDimensions(b)}
                 </div>
               </div>
             ))}
@@ -73,5 +70,6 @@ class BrickPicker extends React.Component {
     }
   }
 }
+
 
 export default BrickPicker;
