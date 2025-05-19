@@ -46,7 +46,7 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': 'false',
-      'Content-Security-Policy': "default-src 'self' 'unsafe-eval'"
+      'Content-Security-Policy': "default-src 'self' 'unsafe-eval' 'unsafe-inline'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:;"
     },
   },
 });
