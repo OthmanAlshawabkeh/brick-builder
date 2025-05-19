@@ -1,7 +1,7 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
 import * as THREE from 'three';
-import { readStep } from '@jscad/step-reader';
+import StepParser from 'three-step-parser';
 import { customBricks } from '../utils/constants';
 import { base } from '../utils/constants';
 
@@ -37,16 +37,8 @@ class FileUploader extends React.Component {
         const reader = new FileReader();
         reader.onload = async (event) => {
           try {
-            // Read the STEP file content
-            const content = event.target.result;
-            // Parse STEP file using jscad
-            const parsed = await readStep(content);
-            
-            // Convert to Three.js geometry
-            const geometry = new THREE.BufferGeometry();
-            // Add vertices
-            const vertices = parsed.vertices.flatMap(v => [v.x, v.y, v.z]);
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            const parser = new StepParser();
+            const geometry = await parser.parse(event.target.result);
             
             // Calculate dimensions based on bounding box
             geometry.computeBoundingBox();
