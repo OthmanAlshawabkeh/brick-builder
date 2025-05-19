@@ -43,8 +43,15 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [ "react", ["env", { "modules": false }], "stage-0" ],
-              plugins: [ "react-hot-loader/babel" ]
+              presets: [
+                "react",
+                ["env", { "modules": false }],
+                "stage-0"
+              ],
+              plugins: [
+                "react-hot-loader/babel",
+                ["@babel/plugin-proposal-pipeline-operator", { "proposal": "minimal" }]
+              ]
             },
           }
         ],
@@ -103,7 +110,6 @@ module.exports = {
         test: /\.woff([^2].*)?$/,
         use: [{
           loader: 'file-loader',
-
           options: {
             name: '/[name].[ext]'
           }
@@ -112,7 +118,6 @@ module.exports = {
         test: /\.woff2(.*)?$/,
         use: [{
           loader: 'file-loader',
-
           options: {
             name: '/[name].[ext]'
           }
@@ -121,7 +126,6 @@ module.exports = {
         test: /\.ttf(.*)?$/,
         use: [{
           loader: 'file-loader',
-
           options: {
             name: '/[name].[ext]'
           }
@@ -130,7 +134,6 @@ module.exports = {
         test: /\.eot(.*)?$/,
         use: [{
           loader: 'file-loader',
-
           options: {
             name: '/[name].[ext]'
           }
@@ -139,7 +142,6 @@ module.exports = {
         test: /\.otf$/,
         use: [{
           loader: 'file-loader',
-
           options: {
             name: '/[name].[ext]'
           }
@@ -148,7 +150,6 @@ module.exports = {
         test: /\.svg(.*)?$/,
         use: [{
           loader: 'url-loader',
-
           options: {
             limit: 10000,
             mimetype: 'image/svg+xml',
@@ -159,7 +160,6 @@ module.exports = {
         test: /\.jpg$/,
         use: [{
           loader: 'url-loader',
-
           options: {
             limit: 10000,
             mimetype: 'image/jpg',
