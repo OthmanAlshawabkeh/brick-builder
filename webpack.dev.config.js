@@ -5,7 +5,7 @@ const webpackBaseConfig = require('./webpack.base.config.js');
 const packageJson = require('./package.json');
 
 module.exports = Object.assign({}, webpackBaseConfig, {
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'cheap-module-source-map',
   mode: 'development',
   entry: Object.keys(webpackBaseConfig.entry).reduce((result, k) => {
     result[k] = [
@@ -29,7 +29,7 @@ module.exports = Object.assign({}, webpackBaseConfig, {
   ],
   devServer: {
     host: '0.0.0.0',
-    port: 4000,
+    port: '4000',
     stats: {
       assets: true,
       colors: true,
@@ -43,15 +43,9 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     contentBase: 'assets',
     publicPath: '/',
     quiet: false,
-    transportMode: 'ws',
-    disableHostCheck: true,
-    allowedHosts: 'all',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': 'false'
     },
-    client: {
-      webSocketURL: 'auto://0.0.0.0:0/ws'
-    }
   },
 });
