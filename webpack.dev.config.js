@@ -5,7 +5,7 @@ const webpackBaseConfig = require('./webpack.base.config.js');
 const packageJson = require('./package.json');
 
 module.exports = Object.assign({}, webpackBaseConfig, {
-  devtool: 'cheap-module-source-map',
+  devtool: 'eval-cheap-module-source-map',
   mode: 'development',
   entry: Object.keys(webpackBaseConfig.entry).reduce((result, k) => {
     result[k] = [
@@ -45,7 +45,8 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     quiet: false,
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'false'
+      'Access-Control-Allow-Credentials': 'false',
+      'Content-Security-Policy': "default-src 'self' 'unsafe-eval'"
     },
   },
 });
