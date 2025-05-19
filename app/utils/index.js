@@ -2,14 +2,12 @@ import React from 'react';
 import { base } from './constants';
 import * as Icons from 'components/Icons';
 
-
 export function CSSToHex(cssColor) {
   return parseInt(`0x${cssColor.substring(1)}`, 16);
 }
 
-
 export function shadeColor(color, percent) {
-	let R = parseInt(color.substring(1,3),16);
+  let R = parseInt(color.substring(1,3),16);
   let G = parseInt(color.substring(3,5),16);
   let B = parseInt(color.substring(5,7),16);
 
@@ -26,20 +24,19 @@ export function shadeColor(color, percent) {
   let BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
 
   return "#"+RR+GG+BB;
-};
-
+}
 
 export function getMeasurementsFromDimensions({ x, y, z }) {
   return { width: base * x, height: base * y || (base * 2) / 1.5, depth: base * z };
 }
 
-
 export function displayNameFromDimensions(dimensions) {
   return `${dimensions.x}x${dimensions.z}`;
 }
 
-
 export function getBrickIconFromDimensions(dimensions) {
-  const Icon = Icons[`B${dimensions.x}x${dimensions.z}`];
+  // Fallback to closest matching icon if exact one doesn't exist
+  const iconName = `B${dimensions.x}x${dimensions.z}`;
+  const Icon = Icons[iconName] || Icons.B2x2;
   return <Icon />;
 }
