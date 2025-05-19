@@ -47,5 +47,10 @@ module.exports = Object.assign({}, webpackBaseConfig, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': 'false'
     },
+    transportMode: 'sockjs', // Added this line to explicitly set the transport mode
+    client: {              // Added client configuration
+      webSocketTransport: 'sockjs',
+      reconnect: true
+    }
   },
 });
