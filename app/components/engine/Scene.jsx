@@ -2,7 +2,7 @@ import React from 'react';
 import PubSub from 'pubsub-js';
 import If from 'if-only';
 
-import Detector from '../../../app/utils/threejs/detector';
+import Detector from '../../utils/threejs/detector';
 import Monitor from 'components/engine/Monitor';
 import Brick from 'components/engine/Brick';
 import Message from 'components/Message';
