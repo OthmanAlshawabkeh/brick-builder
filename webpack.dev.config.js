@@ -6,7 +6,7 @@ const packageJson = require('./package.json');
 
 
 module.exports = Object.assign({}, webpackBaseConfig, {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-source-map',
   mode: 'development',
   entry: Object.keys(webpackBaseConfig.entry).reduce((result, k) => {
     result[k] = [
