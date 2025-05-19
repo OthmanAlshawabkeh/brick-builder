@@ -28,8 +28,8 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     }),
   ],
   devServer: {
-    host: 'localhost',
-    port: '4000',
+    host: '0.0.0.0',
+    port: 4000,
     stats: {
       assets: true,
       colors: true,
@@ -51,11 +51,7 @@ module.exports = Object.assign({}, webpackBaseConfig, {
       'Access-Control-Allow-Credentials': 'false'
     },
     client: {
-      webSocketURL: {
-        hostname: 'localhost',
-        port: 4000,
-        protocol: 'ws'
-      }
+      webSocketURL: 'auto://0.0.0.0:0/ws'
     }
   },
 });
