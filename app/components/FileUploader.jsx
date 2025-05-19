@@ -1,8 +1,9 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
 import * as THREE from 'three';
-import { STEPLoader } from 'three-step-loader';
+import { readStep } from '@jscad/step-reader';
 import { customBricks } from '../utils/constants';
+import { base } from '../utils/constants';
 
 import styles from '../styles/components/file-uploader';
 
@@ -32,28 +33,46 @@ class FileUploader extends React.Component {
     const file = e.target.files[0];
     
     if (file.name.toLowerCase().endsWith('.stp') || file.name.toLowerCase().endsWith('.step')) {
-      const loader = new STEPLoader();
       try {
-        const geometry = await loader.loadAsync(file);
-        
-        // Calculate dimensions based on bounding box
-        geometry.computeBoundingBox();
-        const box = geometry.boundingBox;
-        const dimensions = {
-          x: Math.ceil((box.max.x - box.min.x) / base),
-          z: Math.ceil((box.max.z - box.min.z) / base)
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          try {
+            // Read the STEP file content
+            const content = event.target.result;
+            // Parse STEP file using jscad
+            const parsed = await readStep(content);
+            
+            // Convert to Three.js geometry
+            const geometry = new THREE.BufferGeometry();
+            // Add vertices
+            const vertices = parsed.vertices.flatMap(v => [v.x, v.y, v.z]);
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            
+            // Calculate dimensions based on bounding box
+            geometry.computeBoundingBox();
+            const box = geometry.boundingBox;
+            const dimensions = {
+              x: Math.ceil((box.max.x - box.min.x) / base),
+              z: Math.ceil((box.max.z - box.min.z) / base)
+            };
+            
+            // Add to custom bricks
+            customBricks.push({
+              ...dimensions,
+              geometry: geometry,
+              name: file.name.split('.')[0]
+            });
+            
+            onFinish({ success: true, message: 'STEP file imported successfully' });
+          } catch (err) {
+            console.error('Failed to parse STEP file:', err);
+            onFinish({ success: false, message: 'Failed to parse STEP file' });
+          }
         };
-        
-        // Add to custom bricks
-        customBricks.push({
-          ...dimensions,
-          geometry: geometry,
-          name: file.name.split('.')[0]
-        });
-        
-        onFinish({ success: true, message: 'STEP file imported successfully' });
+        reader.readAsText(file);
       } catch (err) {
-        onFinish({ success: false, message: 'Failed to import STEP file' });
+        console.error('Failed to read file:', err);
+        onFinish({ success: false, message: 'Failed to read file' });
       }
     } else {
       // Handle JSON scene files
