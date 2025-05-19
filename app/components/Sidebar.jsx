@@ -4,15 +4,27 @@ import autobind from 'autobind-decorator';
 
 import FileUploader from './FileUploader';
 import Brick from 'components/engine/Brick';
+import Message from './Message';
 
 import styles from '../styles/components/sidebar';
 
 class Sidebar extends React.Component {
+  state = {
+    error: null
+  };
+
   render() {
     const { utilsOpen, resetScene } = this.props;
+    const { error } = this.state;
+    
     return (
       <div className={utilsOpen ? styles.visible : styles.sidebar}>
         <div className={styles.content}>
+          {error && (
+            <Message type="error" onClose={() => this.setState({ error: null })}>
+              {error}
+            </Message>
+          )}
           <div className={styles.row} onClick={resetScene}>
             <div className={styles.text}>
               <i className="ion-trash-a" />
@@ -61,15 +73,18 @@ class Sidebar extends React.Component {
     try {
       const { importScene } = this.props;
       
+      // Clear any previous errors
+      this.setState({ error: null });
+      
       // Validate the imported data structure
       if (!Array.isArray(objects)) {
-        throw new Error('Invalid scene format: Expected an array of objects');
+        throw new Error('Invalid scene format: The imported file must contain an array of objects');
       }
 
-      const bricks = objects.map((o) => {
+      const bricks = objects.map((o, index) => {
         // Validate required properties
         if (!o.intersect || !o.color || !o.dimensions || !o.rotation || !o.translation) {
-          throw new Error('Invalid brick data: Missing required properties');
+          throw new Error(`Invalid brick data at position ${index + 1}: Missing required properties`);
         }
         return new Brick(o.intersect, o.color, o.dimensions, o.rotation, o.translation);
       });
@@ -77,7 +92,7 @@ class Sidebar extends React.Component {
       importScene(bricks);
     } catch (error) {
       console.error('Failed to import scene:', error);
-      // You might want to show this error to the user through your UI
+      this.setState({ error: error.message });
     }
   }
 }
