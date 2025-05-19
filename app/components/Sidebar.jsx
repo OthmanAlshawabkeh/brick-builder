@@ -69,23 +69,43 @@ class Sidebar extends React.Component {
   }
 
   @autobind
-  _importFile(objects) {
+  _importFile(data) {
     try {
       const { importScene } = this.props;
       
       // Clear any previous errors
       this.setState({ error: null });
       
+      // Parse JSON if string is provided
+      let objects;
+      if (typeof data === 'string') {
+        try {
+          objects = JSON.parse(data);
+        } catch (e) {
+          throw new Error('Invalid JSON format: Please ensure the file contains valid JSON data');
+        }
+      } else {
+        objects = data;
+      }
+      
       // Validate the imported data structure
       if (!Array.isArray(objects)) {
-        throw new Error('Invalid scene format: The imported file must contain an array of objects');
+        throw new Error('Invalid scene format: The imported file must contain an array of objects. Please check your file format.');
+      }
+
+      if (objects.length === 0) {
+        throw new Error('Invalid scene format: The scene file contains no objects. Please import a file with at least one object.');
       }
 
       const bricks = objects.map((o, index) => {
         // Validate required properties
-        if (!o.intersect || !o.color || !o.dimensions || !o.rotation || !o.translation) {
-          throw new Error(`Invalid brick data at position ${index + 1}: Missing required properties`);
+        const requiredProps = ['intersect', 'color', 'dimensions', 'rotation', 'translation'];
+        const missingProps = requiredProps.filter(prop => !o.hasOwnProperty(prop));
+        
+        if (missingProps.length > 0) {
+          throw new Error(`Invalid brick data at position ${index + 1}: Missing required properties: ${missingProps.join(', ')}`);
         }
+
         return new Brick(o.intersect, o.color, o.dimensions, o.rotation, o.translation);
       });
 
