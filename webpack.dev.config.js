@@ -28,7 +28,7 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     }),
   ],
   devServer: {
-    host: '0.0.0.0',
+    host: 'localhost',
     port: '4000',
     stats: {
       assets: true,
@@ -45,19 +45,13 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     quiet: false,
     transportMode: 'ws',
     disableHostCheck: true,
-    allowedHosts: ['localhost', '0.0.0.0'],
+    allowedHosts: 'all',
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'false',
-      'Content-Security-Policy': "default-src 'self' 'unsafe-eval' 'unsafe-inline'; connect-src 'self' ws://localhost:4000 wss://localhost:4000; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:;"
+      'Access-Control-Allow-Credentials': 'false'
     },
     client: {
-      webSocketURL: {
-        hostname: 'localhost',
-        pathname: '/ws',
-        port: 4000,
-        protocol: 'ws'
-      }
+      webSocketURL: 'auto://'
     }
   },
 });
