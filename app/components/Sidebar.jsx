@@ -75,6 +75,11 @@ class Sidebar extends React.Component {
       
       // Clear any previous errors
       this.setState({ error: null });
+
+      // Check if data is null or undefined
+      if (!data) {
+        throw new Error('No data provided: Please select a valid scene file to import.');
+      }
       
       // Parse JSON if string is provided
       let objects;
