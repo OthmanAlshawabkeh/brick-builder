@@ -4,27 +4,16 @@ import autobind from 'autobind-decorator';
 
 import FileUploader from './FileUploader';
 import Brick from 'components/engine/Brick';
-import Message from './Message';
 
 import styles from '../styles/components/sidebar';
 
-class Sidebar extends React.Component {
-  state = {
-    error: null
-  };
 
+class Sidebar extends React.Component {
   render() {
     const { utilsOpen, resetScene } = this.props;
-    const { error } = this.state;
-    
     return (
       <div className={utilsOpen ? styles.visible : styles.sidebar}>
         <div className={styles.content}>
-          {error && (
-            <Message type="error" onClose={() => this.setState({ error: null })}>
-              {error}
-            </Message>
-          )}
           <div className={styles.row} onClick={resetScene}>
             <div className={styles.text}>
               <i className="ion-trash-a" />
@@ -68,53 +57,14 @@ class Sidebar extends React.Component {
     saveAs(fileToSave, fileName);
   }
 
+  // TODO: bad, do this in epic/saga/thunk but not here
   @autobind
-  _importFile(data) {
-    try {
-      const { importScene } = this.props;
-      
-      // Clear any previous errors
-      this.setState({ error: null });
-      
-      // Parse JSON if string is provided
-      let objects;
-      if (typeof data === 'string') {
-        try {
-          objects = JSON.parse(data);
-        } catch (e) {
-          throw new Error('Invalid JSON format: Please ensure the file contains valid JSON data');
-        }
-      } else {
-        objects = data;
-      }
-      
-      // Validate the imported data structure
-      if (!Array.isArray(objects)) {
-        throw new Error('Invalid scene format: The imported file must contain an array of objects. Please check your file format.');
-      }
-
-      if (objects.length === 0) {
-        throw new Error('Invalid scene format: The scene file contains no objects. Please import a file with at least one object.');
-      }
-
-      const bricks = objects.map((o, index) => {
-        // Validate required properties
-        const requiredProps = ['intersect', 'color', 'dimensions', 'rotation', 'translation'];
-        const missingProps = requiredProps.filter(prop => !o.hasOwnProperty(prop));
-        
-        if (missingProps.length > 0) {
-          throw new Error(`Invalid brick data at position ${index + 1}: Missing required properties: ${missingProps.join(', ')}`);
-        }
-
-        return new Brick(o.intersect, o.color, o.dimensions, o.rotation, o.translation);
-      });
-
-      importScene(bricks);
-    } catch (error) {
-      console.error('Failed to import scene:', error);
-      this.setState({ error: error.message });
-    }
+  _importFile(objects) {
+    const { importScene } = this.props;
+    const bricks = objects.map((o) => new Brick(o.intersect, o.color, o.dimensions, o.rotation, o.translation));
+    importScene(bricks);
   }
 }
+
 
 export default Sidebar;
