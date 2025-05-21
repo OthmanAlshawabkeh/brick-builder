@@ -75,11 +75,6 @@ class Sidebar extends React.Component {
       
       // Clear any previous errors
       this.setState({ error: null });
-
-      // Check if data is null or undefined
-      if (!data) {
-        throw new Error('No data provided: Please select a valid scene file to import.');
-      }
       
       // Parse JSON if string is provided
       let objects;
@@ -111,18 +106,7 @@ class Sidebar extends React.Component {
           throw new Error(`Invalid brick data at position ${index + 1}: Missing required properties: ${missingProps.join(', ')}`);
         }
 
-        // Ensure color is a valid hex string
-        let color = o.color;
-        if (typeof color !== 'string' || !color.startsWith('#')) {
-          // If color is a number, convert it to hex string
-          if (typeof color === 'number') {
-            color = '#' + color.toString(16).padStart(6, '0');
-          } else {
-            color = '#FFFFFF'; // Default to white if invalid
-          }
-        }
-
-        return new Brick(o.intersect, color, o.dimensions, o.rotation, o.translation);
+        return new Brick(o.intersect, o.color, o.dimensions, o.rotation, o.translation);
       });
 
       importScene(bricks);
