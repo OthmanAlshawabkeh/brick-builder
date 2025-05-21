@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf docs/",
-    "start": "NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --progress --config webpack.dev.config.js",
-    "dev": "NODE_OPTIONS='--openssl-legacy-provider' webpack-dev-server --progress --config webpack.dev.config.js",
-    "build": "npm run clean && webpack --progress --config webpack.config.js -p",
+    "start": "webpack-dev-server --progress --config webpack.dev.config.js",
+    "dev": "webpack-dev-server --progress --config webpack.dev.config.js",
+    "build": "npm run clean && webpack --progress --config webpack.config.js",
     "webpack": "webpack"
   },
   "repository": {

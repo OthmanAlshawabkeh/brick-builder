@@ -21,11 +21,10 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('development') }
-    }),
-    new webpack.DefinePlugin({
-      'process.env': { REPOSITORY_URL: JSON.stringify(packageJson.repository.url) },
-    }),
+      'process.env': { 
+        REPOSITORY_URL: JSON.stringify(packageJson.repository.url)
+      }
+    })
   ],
   devServer: {
     host: '0.0.0.0',
