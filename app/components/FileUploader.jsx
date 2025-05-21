@@ -33,12 +33,6 @@ class FileUploader extends React.Component {
     const reader = new FileReader();
     const file = e.target.files[0];
 
-    // Check if file exists
-    if (!file) {
-      this.setState({ error: 'Please select a file' });
-      return;
-    }
-
     // Validate file type
     if (!file.name.endsWith('.json')) {
       this.setState({ error: 'Please select a JSON file' });
